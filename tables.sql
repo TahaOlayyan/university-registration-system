@@ -1,0 +1,25 @@
+CREATE TABLE STUDENTS (
+    student_id NUMBER PRIMARY KEY,
+    full_name VARCHAR2(100) NOT NULL,
+    mobile VARCHAR2(15),
+    created_at DATE DEFAULT SYSDATE
+);
+
+CREATE TABLE COURSES (
+    course_id NUMBER PRIMARY KEY,
+    course_name VARCHAR2(100) NOT NULL,
+    course_fee NUMBER(10, 2) NOT NULL
+);
+
+CREATE TABLE ENROLLMENTS (
+    enroll_id NUMBER PRIMARY KEY,
+    student_id NUMBER,
+    course_id NUMBER,
+    enroll_date DATE DEFAULT SYSDATE,
+    mark NUMBER(3) CONSTRAINT ENROLLMENTS_mark_CC CHECK (mark BETWEEN 0 AND 100),
+    fee_paid CHAR(1) CONSTRAINT ENROLLMENTS_fee_paid_CC CHECK (fee_paid IN ('Y','N')),
+    status VARCHAR2(20) CONSTRAINT ENROLLMENTS_status_CC CHECK (status IN('ACTIVE', 'COMPLETED', 'DROPPED')),
+    
+    CONSTRAINT ENROLLMENTS_student_id_FK FOREIGN KEY (student_id) REFERENCES STUDENTS(student_id),
+    CONSTRAINT ENROLLMENTS_course_id_FK FOREIGN KEY (course_id) REFERENCES COURSES(course_id)
+);
